@@ -3,17 +3,19 @@ import './styles/style.css';
 
 import { folderFactory, toDoFactory } from './todomechanism';
 
+const toDoDetailsForm = document.querySelector('#toDoDetails');
+const toDoDetailsBtn = document.querySelector('#toDoDetailsBtn');
+
+toDoDetailsBtn.addEventListener('click', handleDetailsClick);
+
 let folder1 = folderFactory('MAIN');
 
-let todo1 = toDoFactory('feed', 'feed fish', 'today', 'important');
-let todo2 = toDoFactory('x','y','z','1');
+function handleDetailsClick(e) {
+    e.preventDefault();
 
-folder1.addToDoIntoFolder(todo1);
-folder1.addToDoIntoFolder(todo2);
+    // make new todo and add into array
+    const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, toDoDetailsForm.dueDate.value, toDoDetailsForm.priority.checked);
+    folder1.addToDoIntoFolder(newToDo);
+    console.log(folder1.toDoArray);
+}
 
-console.log(folder1.toDoArray);
-
-
-folder1.removeToDoFromFolder(todo1);
-
-console.log(folder1.toDoArray);
