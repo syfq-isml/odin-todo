@@ -1,12 +1,18 @@
-let mainAppArray = [];
+const folderController = (function(){
+    let mainAppArray = [];
 
-const rearrangeFolderOrder = function() {
+    const rearrangeFolderOrder = function() {
 
-}
+    }
 
-const addFolderIntoArray = function(folderObj) {
-    mainAppArray.push(folderObj);
-}
+    const addFolderIntoArray = (folderObj) => {
+        mainAppArray.push(folderObj);
+    }
+
+    return {
+        mainAppArray, addFolderIntoArray
+    };
+})();
 
 const folderFactory = function(name) {
     let _name = name;
@@ -77,4 +83,4 @@ const toDoFactory = function(title, description, dueDate, priority) {
     }
 }
 
-export { folderFactory, toDoFactory };
+export { folderController, folderFactory, toDoFactory };

@@ -7,8 +7,40 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <main>
-        <div>
+    
+    <div id="page-wrapper">
+        <header>
+            <h1>To-Do Voodoo</h1>
+        </header>
+        <main>
+            <div id="sidebar">
+                <div class="wrapper">
+                    <h2>Projects</h2>
+                    <div id="projects-wrapper">
+                        <h3>+ Add new project</h3>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <h2>Calendar</h2>
+                </div>
+            </div>
+            <div id="display-section">
+                <div>
+                    <h1>My Project</h1>
+                    <div>
+                        <div class="todo-box">
+                            <p>Example text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html> 
+
+
+<!-- <div>
             <fieldset>
                 <legend>Enter Details</legend>
                 <form id="toDoDetails">
@@ -19,7 +51,4 @@
                 </form>
                 <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
             </fieldset>
-        </div>
-    </main>
-</body>
-</html>
+        </div> -->
