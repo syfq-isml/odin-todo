@@ -63,7 +63,7 @@ main {
 
 
 
-#indiv-proj-wrapper {
+.indiv-proj-wrapper {
     border:1px solid black;
     padding: 3px 0;
 }
