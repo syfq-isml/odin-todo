@@ -4,6 +4,7 @@ import './styles/style.css';
 import { folderController, folderFactory, toDoFactory } from './todomechanism';
 
 import format from '../node_modules/date-fns/format';
+import isEqual from 'date-fns/isEqual';
 
 import blankCheckSvg from './assets/svg/check-blank.svg';
 import imptBtnSvg from './assets/svg/important.svg';
@@ -24,8 +25,8 @@ const displaySectionWrapper = document.querySelector('#display-section-wrapper')
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
-    const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', format(new Date(), 'dd/MM/yyyy'), true);
-    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', format(new Date(), 'dd/MM/yyyy'), false);
+    const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2000, 11, 17), true);
+    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2011, 11, 17), false);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     console.log(folderController.mainAppArray);
@@ -62,17 +63,18 @@ function displayToDo(folder) {
     // sort the todos by due date
     folder.sortByDueDate();
 
-    folder.toDoArray.forEach((todo, index) => {
+    folder.toDoArray.forEach((todo, index, arr) => {
 
     // create DOM elements
     const date = document.createElement('h2');
     date.classList.add('date-heading');
+    date.innerText = `${format(todo.dueDate, "cccc, do MMMM yyyy")}`;
     
     // initialise create date
-    if (index === 0) date.parentElement.append(date); 
+    if (index === 0) todoWrapper.append(date);
 
     // if current date !== last date, create date 
-    if (todo[index].dueDate === todo[index-1].dueDate) date.parentElement.append(date);
+    if (index !==0 && !isEqual(arr[index].dueDate, arr[index-1].dueDate)) todoWrapper.append(date);
 
     const todoBox = document.createElement('div');
     todoBox.classList.add('todo-box');

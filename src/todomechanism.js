@@ -62,7 +62,7 @@ const folderFactory = function(name) {
 const toDoFactory = function(title, description, dueDate, priority) {
     let _title = title;
     let _description = description;
-    let _dueDate = format(dueDate, 'dd/MM/yyyy');
+    let _dueDate = dueDate;
     let _priority = priority;
 
     const changeContent = (prop, newProp) => {
