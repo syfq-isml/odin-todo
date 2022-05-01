@@ -1,3 +1,7 @@
+
+import { compareAsc } from "date-fns";
+import format from "date-fns/format";
+
 const folderController = (function(){
     let mainAppArray = [];
 
@@ -34,6 +38,10 @@ const folderFactory = function(name) {
         name = newName;
     }
 
+    const sortByDueDate = () => {
+        toDoArray.sort((a,b) => compareAsc(a.dueDate, b.dueDate));
+    }
+
 
     return {
         get name() {
@@ -46,19 +54,21 @@ const folderFactory = function(name) {
 
         addToDoIntoFolder,
         removeToDoFromFolder,
-        changeNameOfFolder
+        changeNameOfFolder,
+        sortByDueDate
     }
 }
 
 const toDoFactory = function(title, description, dueDate, priority) {
     let _title = title;
     let _description = description;
-    let _dueDate = dueDate;
+    let _dueDate = format(dueDate, 'dd/MM/yyyy');
     let _priority = priority;
 
     const changeContent = (prop, newProp) => {
         prop = newProp;
     }
+
 
 
 
