@@ -43,6 +43,18 @@
             </div>
         </main>
     </div>
+    <dialog id="todo-modal" method="dialog">
+        <fieldset>
+            <legend>Enter Details</legend>
+            <form id="toDoDetails">
+                <label for="title">Title</label><input required type="text" id="title" name="title">
+                <input type="date" id="dueDate"><label for="dueDate"></label>
+                <input type="checkbox" id="priority"><label for="priority">Mark as Important</label>
+                <label for="description"></label><textarea name="" id="description" cols="30" rows="10"></textarea>
+            </form>
+            <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
+        </fieldset>
+    </dialog>
 </body>
 </html> 
 

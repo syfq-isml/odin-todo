@@ -22,6 +22,11 @@ const projWrapper = document.querySelector('#proj-name-wrapper');
 const todoWrapper = document.querySelector('#todo-wrapper');
 const displaySectionWrapper = document.querySelector('#display-section-wrapper');
 
+const addNewProjBtn = document.querySelector('#add-new-btn');
+
+const todoModal = document.querySelector('#todo-modal');
+
+
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
@@ -30,18 +35,60 @@ if (folderController.mainAppArray.length === 0) {
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     console.log(folderController.mainAppArray);
+    displayFolderName();
 }
+
+addNewProjBtn.addEventListener('click', addNewFolder);
+
+// function to add folder on click
+function addNewFolder() {
+    // opens up an input + 'confirm' btn below
+    const input = document.createElement('input');
+    input.setAttribute('type','text');
+    input.classList.add('folder-input');
+
+    const confirm = document.createElement('button');
+    confirm.innerText = 'ADD';
+    confirm.setAttribute('type','button');
+    confirm.classList.add('side-buttons');
+
+    projWrapper.append(input, confirm);
+
+    // hide the big 'add new proj' btn for now
+    addNewProjBtn.style.display = 'none';
+
+    confirm.addEventListener('click', () => {
+
+        // get input & produce new folder
+        const newFolder = folderFactory(input.value);
+        folderController.addFolderIntoArray(newFolder);
+    
+        // display folder name on sidebar
+        displayFolderName();
+
+        // reset everything (hide confirm, hide input, reappear big btn)
+        input.remove();
+        confirm.remove();
+        addNewProjBtn.style.display = 'block';
+
+    })
+}
+
 
 // function to display folder name on sidebar
 function displayFolderName() {
 
     console.log('I am called');
 
+    // wipe DOM clean
+    removeChildFromParent(projWrapper);
+
+
     // get folder names from array
     const currentFolderNames = folderController.mainAppArray.map((folder) => folder.name);
     
     // sort by alphabetical order
-    currentFolderNames.sort((a,b) => a>b? 1:-1);
+    // currentFolderNames.sort((a,b) => a>b? 1:-1);
 
     // create DOM elements for each element in array
     currentFolderNames.forEach((item) => {
