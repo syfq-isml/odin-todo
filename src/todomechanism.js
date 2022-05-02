@@ -1,6 +1,7 @@
 
 import { compareAsc } from "date-fns";
 import format from "date-fns/format";
+import { v4 as uuidv4 } from 'uuid';
 
 const folderController = (function(){
     let mainAppArray = [];
@@ -20,6 +21,8 @@ const folderController = (function(){
 
 const folderFactory = function(name) {
     let _name = name;
+
+    const _id = uuidv4();
 
     let toDoArray = [];
 
@@ -46,6 +49,10 @@ const folderFactory = function(name) {
     return {
         get name() {
             return _name;
+        },
+
+        get id() {
+            return _id;
         },
 
         get toDoArray() {

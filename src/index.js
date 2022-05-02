@@ -26,7 +26,7 @@ const displaySectionWrapper = document.querySelector('#display-section-wrapper')
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
     const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2000, 11, 17), true);
-    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2011, 11, 17), false);
+    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(1998, 11, 17), false);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     console.log(folderController.mainAppArray);
@@ -68,6 +68,7 @@ function displayToDo(folder) {
     // create DOM elements
     const date = document.createElement('h2');
     date.classList.add('date-heading');
+    date.setAttribute('data-date',"");
     date.innerText = `${format(todo.dueDate, "cccc, do MMMM yyyy")}`;
     
     // initialise create date
@@ -101,6 +102,9 @@ function displayToDo(folder) {
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
     delBtn.classList.add('icons');
+    delBtn.setAttribute('data-delete',"");
+    delBtn.setAttribute('data-parent-folder-id', `${folder.id}`)
+    delBtn.addEventListener('click', deleteToDoFromArrays);
 
     
     if (todo.priority === true) todoActionsBox.append(imptBtn);
@@ -111,20 +115,80 @@ function displayToDo(folder) {
 
     });
 
-    
-    
-
-    // display due date on top of the todo box
-
-
 }
+
+// only removes the specific item
+function handleDelete(e) {
+    // resetting btns array so that btns index is the same as folder index
+    const btns = Array.from(document.querySelectorAll('[data-delete]'));
+
+    // get index of the target btn
+    const index = btns.findIndex((btn) => btn === e.target)
+    console.log(index);
+    
+    // find folder with the dataset name
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
+    console.log(folder);
+
+    // simply delete a todo 
+    // from DOM (+ date)
+    e.target.parentElement.parentElement.remove();
+
+    // from btns array
+    btns.splice(index, 1);
+    
+    // from folder array
+    folder.toDoArray.splice(index, 1);
+
+};
+
+
+// bad points: wipes entire page then refreshes
+function deleteToDoFromArrays(e) {
+    // resetting btns array so that btns index is the same as folder index
+    const btns = Array.from(document.querySelectorAll('[data-delete]'));
+
+    // get index of the target btn
+    const index = btns.findIndex((btn) => btn === e.target)
+    console.log(index);
+    
+    // find folder with the dataset name
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
+    console.log(folder);
+    
+    // from btns array
+    btns.splice(index, 1);
+    
+    // from folder array
+    folder.toDoArray.splice(index, 1);
+
+    // remove everything from todo-wrapper
+    removeChildFromParent(todoWrapper);
+
+    displayToDo(folder);
+}
+
+function removeChildFromParent(elem) {
+    while (elem.firstChild) {
+        elem.firstChild.remove();
+    }
+}
+
+
+
+
 
 displayToDo(defaultFolder);
 
+// function to delete todos
+
+// function to delete folders
+
 // functon to display folder name on display section
 
-// function to display date on display section
+// function to display completed todos below pending todos
 
+// local storage
 
 function handleDetailsClick(e) {
     e.preventDefault();

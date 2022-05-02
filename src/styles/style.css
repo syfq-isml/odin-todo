@@ -71,11 +71,12 @@ main {
 
 #display-section {
     background-color: white;
+    border: 1px solid green;
 }
 
 #display-section > div {
     border: 1px solid black;
-    height: 100%;
+    height: auto;
 
     padding: 5px 10px;
 }
