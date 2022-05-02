@@ -21,6 +21,7 @@ let defaultFolder = folderFactory('myProject');
 const projWrapper = document.querySelector('#proj-name-wrapper');
 const todoWrapper = document.querySelector('#todo-wrapper');
 const displaySectionWrapper = document.querySelector('#display-section-wrapper');
+const initGreeting = document.querySelector('#init-greeting');
 
 const addNewProjBtn = document.querySelector('#add-new-btn');
 
@@ -85,18 +86,20 @@ function displayFolderName() {
 
 
     // get folder names from array
-    const currentFolderNames = folderController.mainAppArray.map((folder) => folder.name);
+    // const currentFolderNames = folderController.mainAppArray.map((folder) => folder.name);
     
     // sort by alphabetical order
     // currentFolderNames.sort((a,b) => a>b? 1:-1);
 
     // create DOM elements for each element in array
-    currentFolderNames.forEach((item) => {
+    folderController.mainAppArray.forEach((item) => {
         const folderWrapper = document.createElement('div');
         folderWrapper.classList.add('indiv-proj-wrapper');
+        folderWrapper.setAttribute('data-folder-content', `${item.id}`);
+        folderWrapper.addEventListener('click', displayFolderContent);
 
         const folderName = document.createElement('h3');
-        folderName.innerText = `${item}`;
+        folderName.innerText = `${item.name}`;
 
         folderWrapper.append(folderName);
         projWrapper.append(folderWrapper);
@@ -104,8 +107,77 @@ function displayFolderName() {
     });
 }
 
+// function to display folder contents in display section
+function displayFolderContent(e) {
+    
+    // wipe DOM entire section 
+    initGreeting.style.display ='none';
+    const _prev = document.querySelectorAll('[data-erase]');
+    _prev.forEach((elem) => elem.remove());
+    const allTodos = document.querySelectorAll('.todo-box');
+    allTodos.forEach((todo) => todo.remove());
+    console.log(e.target);
+
+    // create new DOM elements
+    const headerDiv = document.createElement('div');
+    headerDiv.classList.add('header-div');
+    headerDiv.setAttribute('data-erase',"");
+
+    const headerName = document.createElement('div');
+    headerName.classList.add('header-name');
+
+    const headerActions = document.createElement('div');
+    headerActions.classList.add('header-actions');
+
+    const editBtn = document.createElement('img');
+    editBtn.src = editBtnSvg;
+    
+    const delBtn = document.createElement('img');
+    delBtn.src = delBtnSvg;
+    delBtn.setAttribute('data-delete-header',"");
+
+    headerActions.append(editBtn, delBtn);
+    
+    const headerWords = document.createElement('h1');
+
+    // find the folder
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.folderContent);
+    console.log(e.target.dataset.folderContent);
+    console.log(folder);
+
+    headerWords.innerText = `${folder.name}`;
+    headerName.append(headerWords);
+
+    headerDiv.append(headerName, headerActions);
+    displaySectionWrapper.append(headerDiv);
+
+    displayToDo(folder);
+
+    const bottomArea = document.createElement('div');
+    bottomArea.classList.add('bottom-area');
+    bottomArea.setAttribute('data-erase',"");
+
+    const newBtn = document.createElement('button');
+    newBtn.innerText = "+";
+
+    bottomArea.append(newBtn);
+    displaySectionWrapper.append(bottomArea);
+}
+
 // function to display todo in a todo box
 function displayToDo(folder) {
+
+    // create new TodoWrapper
+    // const todoWrapper = document.createElement('div');
+    // todoWrapper.setAttribute('id','todo-wrapper');
+    // displaySectionWrapper.append(todoWrapper);
+
+    if (folder.toDoArray.length === 0) {
+        const warning = document.createElement('h2');
+        warning.setAttribute('data-erase',"");
+        warning.innerText='You have no current tasks...';
+        todoWrapper.append(warning);
+    }
 
     // sort the todos by due date
     folder.sortByDueDate();
@@ -116,6 +188,7 @@ function displayToDo(folder) {
     const date = document.createElement('h2');
     date.classList.add('date-heading');
     date.setAttribute('data-date',"");
+    date.setAttribute('data-erase',"");
     date.innerText = `${format(todo.dueDate, "cccc, do MMMM yyyy")}`;
     
     // initialise create date
@@ -192,6 +265,8 @@ function handleDelete(e) {
 
 // bad points: wipes entire page then refreshes
 function deleteToDoFromArrays(e) {
+
+    
     // resetting btns array so that btns index is the same as folder index
     const btns = Array.from(document.querySelectorAll('[data-delete]'));
 
@@ -221,13 +296,10 @@ function removeChildFromParent(elem) {
     }
 }
 
+// query selector all todo classes
+// remove them only
 
 
-
-
-displayToDo(defaultFolder);
-
-// function to delete todos
 
 // function to delete folders
 

@@ -59,7 +59,8 @@ main {
 }
 
 .wrapper,
-#projects-wrapper {
+#projects-wrapper,
+#display-section {
     border: 1px solid black;
     border-radius: inherit;
 
@@ -71,6 +72,12 @@ main {
 .indiv-proj-wrapper {
     border:1px solid black;
     padding: 3px 0;
+
+    cursor: pointer;
+}
+
+.indiv-proj-wrapper h3 {
+    pointer-events: none;
 }
 
 
@@ -86,14 +93,33 @@ main {
     padding: 5px 10px;
 }
 
-#display-section > div > h1 {
-    margin: 10px 0;
+#display-section-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-div {
+    display:flex;
+    order:1;
+}
+
+.header-name > h1 {
+    margin-bottom: 10px;
+}
+
+.header-actions {
+    margin-right: 10px;
+    margin-left: auto;
+
 }
 
 #todo-wrapper {
+    order:2;
+
     display:flex;
     flex-direction: column;
     gap:5px;
+
 }
 
 .todo-box {
@@ -124,3 +150,10 @@ main {
     height: 0.8rem;
 }
 
+.bottom-area {
+    order:3;
+}
+
+.bottom-area > button {
+    font-size: 1.5rem;
+}
