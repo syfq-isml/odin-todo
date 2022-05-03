@@ -204,17 +204,15 @@ function displayToDo(folder) {
     // adding id to add function to expand the todo box
     todoBox.setAttribute('data-todo-id',`${todo.id}`);
 
-    const mainWrapper = document.createElement('div');
-    mainWrapper.classList.add('main-todo-wrapper');
-
+    
     const checkBoxWrap = document.createElement('div');
     checkBoxWrap.classList.add('check-box');
-
+    
     const blankCheck = document.createElement('img');
     blankCheck.src = blankCheckSvg;
     blankCheck.classList.add('icons', 'bl-chk');
     checkBoxWrap.append(blankCheck);
-
+    
     const expandBtn = document.createElement('img');
     expandBtn.src = expandMoreSvg;
     expandBtn.classList.add('icons');
@@ -231,8 +229,19 @@ function displayToDo(folder) {
         }
     }
     
+    const mainWrapper = document.createElement('div');
+
     const todoTitle = document.createElement('p');
     todoTitle.innerText = `${todo.title}`;
+
+    const expanding = document.createElement('div');
+    const expandingP = document.createElement('p');
+    expanding.classList.add('todo-expanding');
+    expandingP.innerText = `Description:\n"${todo.description}"`;
+    expanding.append(expandingP);
+    expanding.style.display = 'none';
+
+    mainWrapper.append(todoTitle,expanding);
 
     const todoActionsBox = document.createElement('div');
     todoActionsBox.classList.add('todo-actions');
@@ -255,11 +264,6 @@ function displayToDo(folder) {
     delBtn.setAttribute('data-parent-folder-id', `${folder.id}`)
     delBtn.addEventListener('click', deleteToDoFromArrays);
 
-    const expanding = document.createElement('div');
-    const expandingP = document.createElement('p');
-    expandingP.innerText = `"${todo.description}"`;
-    expanding.append(expandingP);
-    expanding.style.display = 'none';
     
     todoActionsBox.append(imptBtn, editBtn, delBtn);
     
@@ -267,8 +271,7 @@ function displayToDo(folder) {
         imptBtn.style.display ='none';
     }
 
-    mainWrapper.append(checkBoxWrap, expandBtn, todoTitle, todoActionsBox);
-    todoBox.append(mainWrapper, expanding);
+    todoBox.append(checkBoxWrap, expandBtn, mainWrapper, todoActionsBox);
     todoWrapper.append(todoBox);
 
     });

@@ -135,13 +135,15 @@ main {
 .todo-box {
     border: 1px solid black;
 
-    padding: 16px 20px 16px 5px;
-}
-
-.main-todo-wrapper {
     display: flex;
     align-items: center;
     gap: 10px;
+
+    padding: 16px 20px 16px 5px;
+}
+
+.todo-expanding {
+    margin-top: 16px;
 }
 
 .todo-actions {
