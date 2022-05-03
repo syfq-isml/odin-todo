@@ -3,8 +3,9 @@ import './styles/style.css';
 
 import { folderController, folderFactory, toDoFactory } from './todomechanism';
 
-import format from '../node_modules/date-fns/format';
+import format from 'date-fns/format';
 import isEqual from 'date-fns/isEqual';
+import parseISO from 'date-fns/parseISO';
 
 import expandMoreSvg from './assets/svg/expand-more.svg';
 import expandLessSvg from './assets/svg/expand-less.svg';
@@ -14,11 +15,6 @@ import doneSvg from './assets/svg/done.svg';
 import imptBtnSvg from './assets/svg/important.svg';
 import editBtnSvg from './assets/svg/edit.svg';
 import delBtnSvg from './assets/svg/delete.svg';
-
-// const toDoDetailsForm = document.querySelector('#toDoDetails');
-// const toDoDetailsBtn = document.querySelector('#toDoDetailsBtn');
-
-// toDoDetailsBtn.addEventListener('click', handleDetailsClick);
 
 let defaultFolder = folderFactory('myProject');
 
@@ -30,13 +26,17 @@ const initGreeting = document.querySelector('#init-greeting');
 const addNewProjBtn = document.querySelector('#add-new-btn');
 
 const todoModal = document.querySelector('#todo-modal');
+const toDoDetailsForm = document.querySelector('#toDoDetails');
+const todoModalBtn = document.querySelector('#todoModalBtn');
+
+todoModalBtn.addEventListener('click', handleDetailsClick);
 
 
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
-    const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2000, 11, 17), true, false);
-    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(1998, 11, 17), false, true);
+    const exampleToDo = toDoFactory('Create your first task!', "Go on, we'll wait", new Date(), false, false);
+    const exampleToDo2 = toDoFactory("Here's an example of a priority task!", 'See the exclamation point icon on the right?', new Date(), true, true);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     console.log(folderController.mainAppArray);
@@ -99,7 +99,7 @@ function displayFolderName() {
     folderController.mainAppArray.forEach((item) => {
         const folderWrapper = document.createElement('div');
         folderWrapper.classList.add('indiv-proj-wrapper');
-        folderWrapper.setAttribute('data-folder-content', `${item.id}`);
+        folderWrapper.setAttribute('data-parent-folder-id', `${item.id}`);
         folderWrapper.addEventListener('click', displayFolderContent);
 
         const folderName = document.createElement('h3');
@@ -116,11 +116,12 @@ function displayFolderContent(e) {
     
     // wipe DOM entire section 
     initGreeting.style.display ='none';
+    // attempt to remove everything within wrapper except for todo-wrapper
     const _prev = document.querySelectorAll('[data-erase]');
     _prev.forEach((elem) => elem.remove());
     const allTodos = document.querySelectorAll('.todo-box');
     allTodos.forEach((todo) => todo.remove());
-    console.log(e.target);
+    
 
     // create new DOM elements
     const headerDiv = document.createElement('div');
@@ -145,8 +146,8 @@ function displayFolderContent(e) {
     const headerWords = document.createElement('h1');
 
     // find the folder
-    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.folderContent);
-    console.log(e.target.dataset.folderContent);
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
+    
     console.log(folder);
 
     headerWords.innerText = `${folder.name}`;
@@ -162,7 +163,9 @@ function displayFolderContent(e) {
     bottomArea.setAttribute('data-erase',"");
 
     const newBtn = document.createElement('button');
-    newBtn.innerText = "+";
+    newBtn.innerText = "+ ADD NEW TASK";
+    newBtn.setAttribute('data-parent-folder-id',`${folder.id}`);
+    newBtn.addEventListener('click', addNewTodoIntoFolder);
 
     bottomArea.append(newBtn);
     displaySectionWrapper.append(bottomArea);
@@ -357,8 +360,15 @@ function removeChildFromParent(elem) {
 
 
 // function to add todo into folder (use id that is tagged to button --- need to add parent-folder-id again)
+function addNewTodoIntoFolder(e) {
 
-// function to mark as completed
+    // difficult to pass the folder obj to the submit button without adding an event listener here (will be called many times otherwise)
+    // for now, let's assign the id of the folder onto the modal's submit button and find it again
+    todoModalBtn.setAttribute('data-parent-folder-id', `${e.target.dataset.parentFolderId}`);
+    todoModal.showModal();
+    
+}
+
 
 // function to edit folder name
 
@@ -368,13 +378,36 @@ function removeChildFromParent(elem) {
 
 // local storage
 
+// add isExpanded to remember if todo is expanded or not
+
+let counter = 0;
 function handleDetailsClick(e) {
-    e.preventDefault();
+
+    counter++;
+
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
 
     // make new todo and add into array
-    const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, toDoDetailsForm.dueDate.value, toDoDetailsForm.priority.checked);
-    defaultFolder.addToDoIntoFolder(newToDo);
-    console.log(defaultFolder.toDoArray);
-    console.log(folderController.mainAppArray);
+    const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, new Date(toDoDetailsForm.dueDate.value), toDoDetailsForm.priority.checked);
+    folder.addToDoIntoFolder(newToDo);
+    console.log(folder.toDoArray);
+    console.log(counter);
+    // console.log(folderController.mainAppArray);
+
+    todoModal.close();
+    toDoDetailsForm.reset();
+
+    removeChildFromParent(todoWrapper);
+    displayToDo(folder);
+    // displayFolderContent(e);
+    
+}
+
+function isInputEmpty(selector) {
+    const inputs = Array.from(document.querySelectorAll(selector));
+    const result = inputs.indexOf("");
+    if (result === -1) return false;
+    return true;
+    
 }
 

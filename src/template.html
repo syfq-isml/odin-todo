@@ -44,17 +44,14 @@
             </div>
         </main>
     </div>
-    <dialog id="todo-modal" method="dialog">
-        <fieldset>
-            <legend>Enter Details</legend>
+    <dialog id="todo-modal">
             <form id="toDoDetails">
-                <label for="title">Title</label><input required type="text" id="title" name="title">
-                <input type="date" id="dueDate"><label for="dueDate"></label>
-                <input type="checkbox" id="priority"><label for="priority">Mark as Important</label>
-                <label for="description"></label><textarea name="" id="description" cols="30" rows="10"></textarea>
+                <label for="title-input">Title</label><input required type="text" id="title" name="title">
+                <input type="date" id="dueDate" name="dueDate"><label for="dueDate-input"></label>
+                <input type="checkbox" id="priority" name="priority"><label for="priority">Mark as Important</label>
+                <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10"></textarea>
             </form>
-            <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
-        </fieldset>
+            <button type="button" id="todoModalBtn">Submit</button>
     </dialog>
 </body>
 </html> 
