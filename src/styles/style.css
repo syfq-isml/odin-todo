@@ -94,6 +94,7 @@ main {
 }
 
 #display-section-wrapper {
+    min-height: 98%;
     display: flex;
     flex-direction: column;
 }
@@ -116,6 +117,8 @@ main {
 #todo-wrapper {
     order:2;
 
+    border: 1px solid black;
+
     display:flex;
     flex-direction: column;
     gap:5px;
@@ -127,7 +130,7 @@ main {
 }
 
 .check-box > img,
-.todo-actions > img:not(.prio-btn),
+.icons:not(.prio-btn),
 .main-todo-wrapper > img {
     cursor: pointer;
 }
@@ -157,6 +160,10 @@ main {
     margin: 0;
 }
 
+.status-done {
+    background-color: rgb(151, 206, 151);
+}
+
 .icons {
     aspect-ratio: 1/1;
     height: 1rem;
@@ -168,10 +175,15 @@ main {
 
 .bottom-area {
     order:3;
+
+    border: 1px solid black;
+    margin-top: auto;
 }
 
 .bottom-area > button {
     font-size: 1.5rem;
+
+    margin-top: 10px;
 }
 
 /* --- REMOVE POINTER EVENTS --- */

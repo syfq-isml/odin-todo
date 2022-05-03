@@ -9,6 +9,8 @@ import isEqual from 'date-fns/isEqual';
 import expandMoreSvg from './assets/svg/expand-more.svg';
 import expandLessSvg from './assets/svg/expand-less.svg';
 import blankCheckSvg from './assets/svg/check-blank.svg';
+import filledCheckSvg from './assets/svg/check-filled.svg';
+import doneSvg from './assets/svg/done.svg';
 import imptBtnSvg from './assets/svg/important.svg';
 import editBtnSvg from './assets/svg/edit.svg';
 import delBtnSvg from './assets/svg/delete.svg';
@@ -33,8 +35,8 @@ const todoModal = document.querySelector('#todo-modal');
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
-    const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2000, 11, 17), true);
-    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(1998, 11, 17), false);
+    const exampleToDo = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(2000, 11, 17), true, false);
+    const exampleToDo2 = toDoFactory('Create my first To Do', 'Create my first To Do!', new Date(1998, 11, 17), false, true);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     console.log(folderController.mainAppArray);
@@ -211,6 +213,22 @@ function displayToDo(folder) {
     const blankCheck = document.createElement('img');
     blankCheck.src = blankCheckSvg;
     blankCheck.classList.add('icons', 'bl-chk');
+    blankCheck.addEventListener('click', () => {
+        // if checked, uncheck it
+        if (blankCheck.src === filledCheckSvg) {
+            blankCheck.src = blankCheckSvg;
+            todo.changeStatus(false);
+            todoBox.classList.remove('status-done');
+        }
+
+        // if unchecked, check it (meaning its complete)
+        else {
+            blankCheck.src = filledCheckSvg;
+            todo.changeStatus(true);
+            todoBox.classList.add('status-done');
+        }
+    })
+
     checkBoxWrap.append(blankCheck);
     
     const expandBtn = document.createElement('img');
@@ -337,8 +355,8 @@ function removeChildFromParent(elem) {
     }
 }
 
-// function to expand on todos when clicked
 
+// function to add todo into folder (use id that is tagged to button --- need to add parent-folder-id again)
 
 // function to mark as completed
 

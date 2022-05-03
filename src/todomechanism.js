@@ -66,17 +66,21 @@ const folderFactory = function(name) {
     }
 }
 
-const toDoFactory = function(title, description, dueDate, priority) {
+const toDoFactory = function(title, description, dueDate, priority, isDone) {
     let _title = title;
     let _description = description;
     let _dueDate = dueDate;
     let _priority = priority;
+    let _isDone = isDone;
     const _id = uuidv4();
 
     const changeContent = (prop, newProp) => {
         prop = newProp;
     }
 
+    const changeStatus = (newStatus) => {
+        _isDone = newStatus;
+    }
 
 
 
@@ -101,7 +105,12 @@ const toDoFactory = function(title, description, dueDate, priority) {
             return _id
         },
 
-        changeContent
+        get isDone() {
+            return _isDone
+        },
+
+        changeContent,
+        changeStatus
     }
 }
 
