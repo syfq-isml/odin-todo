@@ -36,9 +36,11 @@ todoModalBtn.addEventListener('click', handleDetailsClick);
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
     const exampleToDo = toDoFactory('Create your first task!', "Go on, we'll wait", new Date(), false, false);
-    const exampleToDo2 = toDoFactory("Here's an example of a priority task!", 'See the exclamation point icon on the right?', new Date(), true, true);
+    const exampleToDo2 = toDoFactory("Here's an example of a priority task!", 'See the exclamation point icon on the right?', new Date(), true, false);
+    const exampleToDo3 = toDoFactory("Tasks that are done will appear like so.", "Once you're ready, you can delete these example tasks.", new Date(), false, true);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
+    defaultFolder.addToDoIntoFolder(exampleToDo3);
     console.log(folderController.mainAppArray);
     displayFolderName();
 }
@@ -214,7 +216,14 @@ function displayToDo(folder) {
     checkBoxWrap.classList.add('check-box');
     
     const blankCheck = document.createElement('img');
-    blankCheck.src = blankCheckSvg;
+    if (!todo.isDone) {
+        blankCheck.src = blankCheckSvg;
+
+    } else {
+        blankCheck.src = filledCheckSvg;
+        todoBox.classList.add('status-done');
+    };
+    
     blankCheck.classList.add('icons', 'bl-chk');
     blankCheck.addEventListener('click', () => {
         // if checked, uncheck it
@@ -230,7 +239,7 @@ function displayToDo(folder) {
             todo.changeStatus(true);
             todoBox.classList.add('status-done');
         }
-    })
+    });
 
     checkBoxWrap.append(blankCheck);
     
