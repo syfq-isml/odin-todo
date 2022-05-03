@@ -6,6 +6,8 @@ import { folderController, folderFactory, toDoFactory } from './todomechanism';
 import format from '../node_modules/date-fns/format';
 import isEqual from 'date-fns/isEqual';
 
+import expandMoreSvg from './assets/svg/expand-more.svg';
+import expandLessSvg from './assets/svg/expand-less.svg';
 import blankCheckSvg from './assets/svg/check-blank.svg';
 import imptBtnSvg from './assets/svg/important.svg';
 import editBtnSvg from './assets/svg/edit.svg';
@@ -199,6 +201,12 @@ function displayToDo(folder) {
 
     const todoBox = document.createElement('div');
     todoBox.classList.add('todo-box');
+    // adding id to add function to expand the todo box
+    todoBox.setAttribute('data-todo-id',`${todo.id}`);
+
+    const mainWrapper = document.createElement('div');
+    mainWrapper.classList.add('main-todo-wrapper');
+
     const checkBoxWrap = document.createElement('div');
     checkBoxWrap.classList.add('check-box');
 
@@ -207,6 +215,22 @@ function displayToDo(folder) {
     blankCheck.classList.add('icons', 'bl-chk');
     checkBoxWrap.append(blankCheck);
 
+    const expandBtn = document.createElement('img');
+    expandBtn.src = expandMoreSvg;
+    expandBtn.classList.add('icons');
+    expandBtn.setAttribute('title','Expand');
+    expandBtn.onclick = function() {
+        // if not expanded, expand it
+        if (expandBtn.src === expandMoreSvg) {
+            expandBtn.src = expandLessSvg;
+            expanding.style.display = 'block';
+        }
+        else {
+            expandBtn.src = expandMoreSvg;
+            expanding.style.display = 'none';
+        }
+    }
+    
     const todoTitle = document.createElement('p');
     todoTitle.innerText = `${todo.title}`;
 
@@ -215,22 +239,36 @@ function displayToDo(folder) {
 
     const imptBtn = document.createElement('img');
     imptBtn.src = imptBtnSvg;
-    imptBtn.classList.add('icons');
+    imptBtn.classList.add('icons','prio-btn');
+    imptBtn.setAttribute('title','This task is of high priority!');
+
     const editBtn = document.createElement('img');
     editBtn.src = editBtnSvg;
     editBtn.classList.add('icons');
+    editBtn.setAttribute('title','Edit');
+
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
     delBtn.classList.add('icons');
+    delBtn.setAttribute('title','Delete');
     delBtn.setAttribute('data-delete',"");
     delBtn.setAttribute('data-parent-folder-id', `${folder.id}`)
     delBtn.addEventListener('click', deleteToDoFromArrays);
 
+    const expanding = document.createElement('div');
+    const expandingP = document.createElement('p');
+    expandingP.innerText = `"${todo.description}"`;
+    expanding.append(expandingP);
+    expanding.style.display = 'none';
     
-    if (todo.priority === true) todoActionsBox.append(imptBtn);
-    todoActionsBox.append(editBtn, delBtn);
+    todoActionsBox.append(imptBtn, editBtn, delBtn);
+    
+    if (!todo.priority) {
+        imptBtn.style.display ='none';
+    }
 
-    todoBox.append(checkBoxWrap, todoTitle, todoActionsBox);
+    mainWrapper.append(checkBoxWrap, expandBtn, todoTitle, todoActionsBox);
+    todoBox.append(mainWrapper, expanding);
     todoWrapper.append(todoBox);
 
     });
@@ -296,16 +334,16 @@ function removeChildFromParent(elem) {
     }
 }
 
-// query selector all todo classes
-// remove them only
+// function to expand on todos when clicked
 
 
+// function to mark as completed
+
+// function to edit folder name
+
+// function to edit todo details
 
 // function to delete folders
-
-// functon to display folder name on display section
-
-// function to display completed todos below pending todos
 
 // local storage
 

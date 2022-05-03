@@ -71,6 +71,7 @@ const toDoFactory = function(title, description, dueDate, priority) {
     let _description = description;
     let _dueDate = dueDate;
     let _priority = priority;
+    const _id = uuidv4();
 
     const changeContent = (prop, newProp) => {
         prop = newProp;
@@ -94,6 +95,10 @@ const toDoFactory = function(title, description, dueDate, priority) {
 
         get priority() {
             return _priority
+        },
+
+        get id() {
+            return _id
         },
 
         changeContent

@@ -57,19 +57,34 @@
             </div>
         </main>
     </div>
+<dialog id="todo-modal" method="dialog">
+    <fieldset>
+        <legend>Enter Details</legend>
+        <form id="toDoDetails">
+            <label for="title">Title</label><input required type="text" id="title" name="title">
+            <input type="date" id="dueDate"><label for="dueDate"></label>
+            <input type="checkbox" id="priority"><label for="priority">Mark as Important</label>
+            <label for="description"></label><textarea name="" id="description" cols="30" rows="10"></textarea>
+        </form>
+        <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
+    </fieldset>
+</dialog>
+
 </body>
 </html> 
 
 
-<!-- <div>
-            <fieldset>
-                <legend>Enter Details</legend>
-                <form id="toDoDetails">
-                    <label for="title">Title</label><input required type="text" id="title" name="title">
-                    <input type="date" id="dueDate"><label for="dueDate"></label>
-                    <input type="checkbox" id="priority"><label for="priority">Mark as Important</label>
-                    <label for="description"></label><textarea name="" id="description" cols="30" rows="10"></textarea>
-                </form>
-                <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
-            </fieldset>
-        </div> -->
+<div class="header-div">
+    <div class="header-name">
+        <h1>Project Name</h1>
+    </div>
+    <div class="header-actions">
+        <button>Edit</button>
+        <button>Delete</button>
+    </div>
+</div>
+
+<!-- Add todo button -->
+<div class="bottom-area">
+    <button>ADD NEW TODO</button>
+</div>
