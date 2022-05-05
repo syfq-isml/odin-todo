@@ -409,7 +409,10 @@ function deleteFolder(folder) {
     undoBtn.addEventListener('click', (e) => undoDeleteFolder(e, deletedFolder, index));
 
     const viewAnotherBtn = deleteGreeting.lastChild;
-    viewAnotherBtn.addEventListener('click', viewAnotherFolder);
+    // give button event object of a random folder index
+    viewAnotherBtn.setAttribute("data-parent-folder-id", `${generateRandomFolderIndex()}`);
+    console.log(viewAnotherBtn);
+    viewAnotherBtn.addEventListener('click', displayFolderContent);
 
     // remove from sidebar array (for now lets just reload entire array)
     displayFolderName();
@@ -426,9 +429,13 @@ function undoDeleteFolder(e, folder, index) {
     displayFolderName();
 }
 
-function viewAnotherFolder() {
-
+function generateRandomFolderIndex() {
+    let limit = folderController.mainAppArray.length - 1;
+    let rand = Math.floor(Math.random() * limit);
+    return folderController.mainAppArray[rand].id;
 }
+
+
 
 // function to edit folder name
 
