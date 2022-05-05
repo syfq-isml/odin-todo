@@ -420,7 +420,6 @@ function undoDeleteFolder(e, folder, index) {
     console.log(e);
     // add back into array
     folderController.mainAppArray.splice(index, 0, ...folder);
-    console.log(folderController.mainAppArray);
 
     // show back contents on DOM
     displayFolderContent(e);
