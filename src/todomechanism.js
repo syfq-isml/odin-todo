@@ -14,8 +14,14 @@ const folderController = (function(){
         mainAppArray.push(folderObj);
     }
 
+    const removeFolderFromArray = (index) => {
+        mainAppArray.splice(index, 1);
+    }
+
     return {
-        mainAppArray, addFolderIntoArray
+        mainAppArray, 
+        addFolderIntoArray, 
+        removeFolderFromArray
     };
 })();
 

@@ -45,13 +45,17 @@
         </main>
     </div>
     <dialog id="todo-modal">
-            <form id="toDoDetails">
-                <label for="title-input">Title</label><input required type="text" id="title" name="title">
-                <input type="date" id="dueDate" name="dueDate"><label for="dueDate-input"></label>
-                <input type="checkbox" id="priority" name="priority"><label for="priority">Mark as Important</label>
-                <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10"></textarea>
-            </form>
-            <button type="button" id="todoModalBtn">Submit</button>
+            <div class="modal-wrapper">
+                <form id="toDoDetails">
+                    <label for="title">Title</label><input required type="text" id="title" name="title">
+                    <label for="dueDate">Due Date</label><input type="date" id="dueDate" name="dueDate">
+                    <div>
+                        <input type="checkbox" id="priority" name="priority"><label for="priority">Mark as Important</label>
+                    </div>
+                    <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10"></textarea>
+                </form>
+                <button type="button" id="todoModalBtn">Submit</button>
+            </div>
     </dialog>
 </body>
 </html> 

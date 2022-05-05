@@ -186,6 +186,35 @@ main {
     margin-top: 10px;
 }
 
+/* --- MODAL AND FORM --- */
+
+dialog {
+    border: 0;
+    border-radius: 3px;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.386);
+    backdrop-filter: blur(2px);
+}
+
+.modal-wrapper,
+#toDoDetails {
+    display:flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+#toDoDetails > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+}
+
+
+
 /* --- REMOVE POINTER EVENTS --- */
 
 .main-todo-wrapper p{

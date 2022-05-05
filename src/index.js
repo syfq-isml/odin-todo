@@ -118,12 +118,16 @@ function displayFolderContent(e) {
     
     // wipe DOM entire section 
     initGreeting.style.display ='none';
+
     // attempt to remove everything within wrapper except for todo-wrapper
-    const _prev = document.querySelectorAll('[data-erase]');
-    _prev.forEach((elem) => elem.remove());
-    const allTodos = document.querySelectorAll('.todo-box');
-    allTodos.forEach((todo) => todo.remove());
+    // const _prev = document.querySelectorAll('[data-erase]');
+    // _prev.forEach((elem) => elem.remove());
+    // const allTodos = document.querySelectorAll('.todo-box');
+    // allTodos.forEach((todo) => todo.remove());
+    wipeDOMCarefully();
     
+    // find the folder
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
 
     // create new DOM elements
     const headerDiv = document.createElement('div');
@@ -142,14 +146,12 @@ function displayFolderContent(e) {
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
     delBtn.setAttribute('data-delete-header',"");
+    delBtn.addEventListener('click', () => deleteFolder(folder));
 
     headerActions.append(editBtn, delBtn);
     
     const headerWords = document.createElement('h1');
 
-    // find the folder
-    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
-    
     console.log(folder);
 
     headerWords.innerText = `${folder.name}`;
@@ -378,12 +380,64 @@ function addNewTodoIntoFolder(e) {
     
 }
 
+function wipeDOMCarefully() {
+     // attempt to remove everything within wrapper except for todo-wrapper
+     const _prev = document.querySelectorAll('[data-erase]');
+     _prev.forEach((elem) => elem.remove());
+     const allTodos = document.querySelectorAll('.todo-box');
+     allTodos.forEach((todo) => todo.remove());
+}
+
+// function to delete folders
+function deleteFolder(folder) {
+    // remove from main app array
+    // find index from main app array
+    const index = folderController.mainAppArray.findIndex((item) => item.id === folder.id);
+    // then remove it
+    const deletedFolder = folderController.mainAppArray.splice(index,1);
+    wipeDOMCarefully();
+
+    const deleteGreeting = document.createElement('h1');
+    deleteGreeting.setAttribute('data-erase',"");
+    deleteGreeting.innerHTML = `You've just deleted a project.<br><button type="button">Undo</button> or <button type="submit">View another?</button>`;
+    displaySectionWrapper.append(deleteGreeting);
+    
+    const undoBtn = deleteGreeting.children[1];
+    console.log(undoBtn);
+    undoBtn.setAttribute("data-parent-folder-id", `${deletedFolder[0].id}`);
+    console.log(deletedFolder[0].id);
+    undoBtn.addEventListener('click', (e) => undoDeleteFolder(e, deletedFolder, index));
+
+    const viewAnotherBtn = deleteGreeting.lastChild;
+    viewAnotherBtn.addEventListener('click', viewAnotherFolder);
+
+    // remove from sidebar array (for now lets just reload entire array)
+    displayFolderName();
+}
+
+function undoDeleteFolder(e, folder, index) {
+
+    console.log(e);
+    // add back into array
+    folderController.mainAppArray.splice(index, 0, ...folder);
+    console.log(folderController.mainAppArray);
+
+    // show back contents on DOM
+    displayFolderContent(e);
+    displayFolderName();
+}
+
+function viewAnotherFolder() {
+
+}
 
 // function to edit folder name
 
+// add form validation on todo modal(red words underneath)
+
 // function to edit todo details
 
-// function to delete folders
+
 
 // local storage
 
