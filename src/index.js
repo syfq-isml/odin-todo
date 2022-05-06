@@ -459,8 +459,10 @@ function generateRandomFolderIndex() {
 function validateFormInputs() {
     // validate empty title field
     let titleInput = document.querySelector('input#title');
-    if (titleInput.value === "") return false;
-    console.log('Title is not empty');
+    if (titleInput.value === "") {
+        alert("Come on, at least give your task a title!");
+        return false;
+    } 
 
     // display error message for empty title field
 
@@ -468,7 +470,10 @@ function validateFormInputs() {
     let dateInput = document.querySelector('input#dueDate');
     // valide empty date field
     console.log(dateInput.value);
-    if (dateInput.value === "") return false;
+    if (dateInput.value === "") {
+        alert("Enter a valid date!");
+        return false;
+    };
     // incorrect date input automatically checked by date picker (returns "")
 
     // let numbers = dateInput.value.split('-');
