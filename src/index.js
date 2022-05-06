@@ -6,6 +6,8 @@ import { folderController, folderFactory, toDoFactory } from './todomechanism';
 import format from 'date-fns/format';
 import isEqual from 'date-fns/isEqual';
 import parseISO from 'date-fns/parseISO';
+import isValid from 'date-fns/isValid';
+import isExists from 'date-fns/isExists';
 
 import expandMoreSvg from './assets/svg/expand-more.svg';
 import expandLessSvg from './assets/svg/expand-less.svg';
@@ -142,9 +144,13 @@ function displayFolderContent(e) {
 
     const editBtn = document.createElement('img');
     editBtn.src = editBtnSvg;
+    editBtn.classList.add('big-icons');
+    editBtn.setAttribute("title","Edit project name");
     
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
+    delBtn.classList.add('big-icons');
+    delBtn.setAttribute("title","Delete project folder");
     delBtn.setAttribute('data-delete-header',"");
     delBtn.addEventListener('click', () => deleteFolder(folder));
 
@@ -436,31 +442,59 @@ function generateRandomFolderIndex() {
 }
 
 
-
 // function to edit folder name
 
 // add form validation on todo modal(red words underneath)
 
 // function to edit todo details
 
-
+// do the stacking effect ( todos collide with "new" todo button)
 
 // local storage
 
 // add isExpanded to remember if todo is expanded or not
 
-let counter = 0;
+// add time aspect
+
+function validateFormInputs() {
+    // validate empty title field
+    let titleInput = document.querySelector('input#title');
+    if (titleInput.value === "") return false;
+    console.log('Title is not empty');
+
+    // display error message for empty title field
+
+    // validate date
+    let dateInput = document.querySelector('input#dueDate');
+    // valide empty date field
+    console.log(dateInput.value);
+    if (dateInput.value === "") return false;
+    // incorrect date input automatically checked by date picker (returns "")
+
+    // let numbers = dateInput.value.split('-');
+    
+    // numbers.forEach((number, index) => {
+    //     if (number === "") numbers[index] = 99999;
+    // })
+
+    // if (isExists(numbers[0],numbers[1],numbers[2])) return false;
+    // console.log('Date exists');
+
+    return true;
+}
+
+
+
 function handleDetailsClick(e) {
 
-    counter++;
+    if (validateFormInputs() === false) return;
 
     const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
 
     // make new todo and add into array
-    const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, new Date(toDoDetailsForm.dueDate.value), toDoDetailsForm.priority.checked);
+    const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, new Date(toDoDetailsForm.dueDate.value), toDoDetailsForm.priority.checked, false);
     folder.addToDoIntoFolder(newToDo);
     console.log(folder.toDoArray);
-    console.log(counter);
     // console.log(folderController.mainAppArray);
 
     todoModal.close();

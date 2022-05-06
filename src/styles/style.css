@@ -5,7 +5,7 @@ body {
     background-color: antiquewhite;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h6 {
     padding: 0;
     margin: 0;
 }
@@ -102,15 +102,21 @@ main {
 .header-div {
     display:flex;
     order:1;
+
+    margin-bottom: 10px;
 }
 
 .header-name > h1 {
-    margin-bottom: 10px;
+    
 }
 
 .header-actions {
     margin-right: 10px;
     margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
 }
 
@@ -162,6 +168,12 @@ main {
 
 .status-done {
     background-color: rgb(151, 206, 151);
+}
+
+.big-icons {
+    aspect-ratio: 1/1;
+    height: 1.5rem;
+    cursor: pointer;
 }
 
 .icons {
