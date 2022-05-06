@@ -293,6 +293,9 @@ function displayToDo(folder) {
     editBtn.src = editBtnSvg;
     editBtn.classList.add('icons');
     editBtn.setAttribute('title','Edit');
+    editBtn.setAttribute('data-parent-folder-id',`${folder.id}`);
+    editBtn.setAttribute('data-todo-id',`${todo.id}`);
+    editBtn.addEventListener('click', editTodoDetails);
 
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
@@ -441,10 +444,26 @@ function generateRandomFolderIndex() {
     return folderController.mainAppArray[rand].id;
 }
 
+function editTodoDetails(e) {
+    // find parent folder
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
+    // find todo within folder
+    const todo = folder.toDoArray.find((item) => item.id === e.target.dataset.todoId);
+
+    // fill in inputs with current todo details
+    toDoDetailsForm.title.value = todo.title;
+    toDoDetailsForm.description.value = todo.description;
+    toDoDetailsForm.priority.checked = todo.priority;
+    console.log(todo.dueDate);
+    toDoDetailsForm.dueDate.value = format(todo.dueDate, "yyyy-MM-dd");
+
+    todoModalBtn.setAttribute('data-parent-folder-id', `${folder.id}`);
+    todoModal.showModal();
+}
 
 // function to edit folder name
-
-// add form validation on todo modal(red words underneath)
+// click -> dialog -> IF confirmed, delete old one, replace with new
+// IF exit, nothing happens
 
 // function to edit todo details
 
