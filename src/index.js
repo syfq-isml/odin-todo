@@ -5,6 +5,7 @@ import { folderController, folderFactory, toDoFactory } from './todomechanism';
 
 import format from 'date-fns/format';
 import isEqual from 'date-fns/isEqual';
+import set from 'date-fns/set';
 import parseISO from 'date-fns/parseISO';
 import isValid from 'date-fns/isValid';
 import isExists from 'date-fns/isExists';
@@ -37,9 +38,10 @@ todoModalBtn.addEventListener('click', handleDetailsClick);
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
     folderController.addFolderIntoArray(defaultFolder);
-    const exampleToDo = toDoFactory('Create your first task!', "Go on, we'll wait", new Date(), false, false);
-    const exampleToDo2 = toDoFactory("Here's an example of a priority task!", 'See the exclamation point icon on the right?', new Date(), true, false);
-    const exampleToDo3 = toDoFactory("Tasks that are done will appear like so.", "Once you're ready, you can delete these example tasks.", new Date(), false, true);
+    const currentDate = set(new Date(), { hours: 8, minutes: 0, seconds:0, milliseconds: 0});
+    const exampleToDo = toDoFactory('Create your first task!', "Go on, we'll wait", currentDate, false, false);
+    const exampleToDo2 = toDoFactory("Here's an example of a priority task!", 'See the exclamation point icon on the right?', currentDate, true, false);
+    const exampleToDo3 = toDoFactory("Tasks that are done will appear like so.", "Once you're ready, you can delete these example tasks.", currentDate, false, true);
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     defaultFolder.addToDoIntoFolder(exampleToDo3);
@@ -458,8 +460,15 @@ function editTodoDetails(e) {
     toDoDetailsForm.dueDate.value = format(todo.dueDate, "yyyy-MM-dd");
 
     todoModalBtn.setAttribute('data-parent-folder-id', `${folder.id}`);
+    todoModalBtn.setAttribute('data-todo-id', `${todo.id}`);
+    todoModalBtn.setAttribute('data-edit-todo',"");
+
+    // remove current eventlistener
+    // add new eventlistener
     todoModal.showModal();
 }
+
+
 
 // function to edit folder name
 // click -> dialog -> IF confirmed, delete old one, replace with new
@@ -488,7 +497,7 @@ function validateFormInputs() {
     // validate date
     let dateInput = document.querySelector('input#dueDate');
     // valide empty date field
-    console.log(dateInput.value);
+    // console.log(dateInput.value);
     if (dateInput.value === "") {
         alert("Enter a valid date!");
         return false;
@@ -515,15 +524,30 @@ function handleDetailsClick(e) {
 
     const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
 
+    // if editing todo, delete old one first
+    if (todoModalBtn.hasAttribute('data-edit-todo')) {
+        console.log('I am called');
+        const todo = folder.toDoArray.find((item) => item.id === e.target.dataset.todoId);
+        // const index = folder.toDoArray.findIndex((item) => item === todo);
+        // folder.toDoArray.splice(index, 1);
+        // console.log('Todo removed');
+        todo.editAllDetails(toDoDetailsForm.title.value, toDoDetailsForm.description.value, new Date(toDoDetailsForm.dueDate.value), toDoDetailsForm.priority.checked);
+        
+        todoModalBtn.removeAttribute('data-edit-todo');
+    } else {
+    
     // make new todo and add into array
     const newToDo = toDoFactory(toDoDetailsForm.title.value, toDoDetailsForm.description.value, new Date(toDoDetailsForm.dueDate.value), toDoDetailsForm.priority.checked, false);
+    console.log(new Date(toDoDetailsForm.dueDate.value));
     folder.addToDoIntoFolder(newToDo);
     console.log(folder.toDoArray);
     // console.log(folderController.mainAppArray);
+    }
 
     todoModal.close();
     toDoDetailsForm.reset();
-
+    
+    // refresh array
     removeChildFromParent(todoWrapper);
     displayToDo(folder);
     // displayFolderContent(e);

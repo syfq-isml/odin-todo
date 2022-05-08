@@ -88,6 +88,13 @@ const toDoFactory = function(title, description, dueDate, priority, isDone) {
         _isDone = newStatus;
     }
 
+    const editAllDetails = (newTitle, newDesc, newDate, newPrio) => {
+        _title = newTitle;
+        _description = newDesc;
+        _dueDate = newDate;
+        _priority = newPrio;
+    }
+
 
 
     return {
@@ -116,7 +123,8 @@ const toDoFactory = function(title, description, dueDate, priority, isDone) {
         },
 
         changeContent,
-        changeStatus
+        changeStatus,
+        editAllDetails
     }
 }
 
