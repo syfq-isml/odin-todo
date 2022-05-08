@@ -1,7 +1,7 @@
 import '../node_modules/normalize.css/normalize.css';
 import './styles/style.css';
 
-import { folderController, folderFactory, toDoFactory, REfolderFactory, REtoDoFactory } from './todomechanism';
+import { folderController, folderFactory, toDoFactory } from './todomechanism';
 
 import format from 'date-fns/format';
 import isEqual from 'date-fns/isEqual';
@@ -20,6 +20,16 @@ import imptBtnSvg from './assets/svg/important.svg';
 import editBtnSvg from './assets/svg/edit.svg';
 import delBtnSvg from './assets/svg/delete.svg';
 
+// bring out the local storage memory
+
+const folderController = JSON.parse(localStorage.getItem("state")) || folderController;
+
+window.addEventListener('beforeunload', saveState);
+
+function saveState() {
+    localStorage.setItem("state", JSON.stringify(folderController));
+    return null;
+}
 
 let defaultFolder = folderFactory('myProject');
 
@@ -36,32 +46,6 @@ const todoModalBtn = document.querySelector('#todoModalBtn');
 
 todoModalBtn.addEventListener('click', handleDetailsClick);
 
-// bring out the local storage memory
-
-if (localStorage.getItem("main")) {
-    folderController.mainAppArray = JSON.parse(localStorage.getItem("main"));
-    console.log(folderController.mainAppArray);
-
-    folderController.mainAppArray.forEach((folder) => {
-        const newFolder = REfolderFactory(folder.name, folder.id, folder.arr);
-        console.log(newFolder);
-        
-        // newFolder.toDoArray.forEach((todo) => {
-        //     const newToDo = REtoDoFactory(todo.title, todo.description, todo.dueDate, todo.priority, todo.isDone, todo.id);
-        // });
-        
-    });
-}
-
-
-    
-
-window.addEventListener('beforeunload', saveState);
-
-function saveState() {
-    localStorage.setItem("main", JSON.stringify(folderController.mainAppArray));
-    return null;
-}
 
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
@@ -73,10 +57,9 @@ if (folderController.mainAppArray.length === 0) {
     defaultFolder.addToDoIntoFolder(exampleToDo);
     defaultFolder.addToDoIntoFolder(exampleToDo2);
     defaultFolder.addToDoIntoFolder(exampleToDo3);
-    console.log('First visit initialization');
+    console.log(folderController.mainAppArray);
     displayFolderName();
 }
-else {displayFolderName();};
 
 addNewProjBtn.addEventListener('click', addNewFolder);
 
@@ -117,6 +100,8 @@ function addNewFolder() {
 
 // function to display folder name on sidebar
 function displayFolderName() {
+
+    console.log('I am called');
 
     // wipe DOM clean
     removeChildFromParent(projWrapper);
@@ -188,6 +173,8 @@ function displayFolderContent(e) {
     headerActions.append(editBtn, delBtn);
     
     const headerWords = document.createElement('h1');
+
+    console.log(folder);
 
     headerWords.innerText = `${folder.name}`;
     headerName.append(headerWords);
@@ -393,8 +380,7 @@ function deleteToDoFromArrays(e) {
     btns.splice(index, 1);
     
     // from folder array
-    folder.removeToDoFromFolder(index);
-    console.log(folder.toDoArray);
+    folder.toDoArray.splice(index, 1);
 
     // remove everything from todo-wrapper
     removeChildFromParent(todoWrapper);
