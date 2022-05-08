@@ -43,8 +43,8 @@ const folderFactory = function(name) {
         toDoArray.splice(index, 1);
     }
 
-    const changeNameOfFolder = (newName) => {
-        name = newName;
+    const changeName = (newName) => {
+        _name = newName;
     }
 
     const sortByDueDate = () => {
@@ -67,7 +67,7 @@ const folderFactory = function(name) {
 
         addToDoIntoFolder,
         removeToDoFromFolder,
-        changeNameOfFolder,
+        changeName,
         sortByDueDate
     }
 }
@@ -79,10 +79,6 @@ const toDoFactory = function(title, description, dueDate, priority, isDone) {
     let _priority = priority;
     let _isDone = isDone;
     const _id = uuidv4();
-
-    const changeContent = (prop, newProp) => {
-        prop = newProp;
-    }
 
     const changeStatus = (newStatus) => {
         _isDone = newStatus;
@@ -122,7 +118,6 @@ const toDoFactory = function(title, description, dueDate, priority, isDone) {
             return _isDone
         },
 
-        changeContent,
         changeStatus,
         editAllDetails
     }

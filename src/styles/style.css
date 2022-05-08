@@ -106,8 +106,10 @@ main {
     margin-bottom: 10px;
 }
 
-.header-name > h1 {
-    
+.header-name {
+    display: flex;
+    gap: 5px;
+    align-items: center;
 }
 
 .header-actions {

@@ -14,6 +14,7 @@ import expandMoreSvg from './assets/svg/expand-more.svg';
 import expandLessSvg from './assets/svg/expand-less.svg';
 import blankCheckSvg from './assets/svg/check-blank.svg';
 import filledCheckSvg from './assets/svg/check-filled.svg';
+import cancelSvg from './assets/svg/cancel.svg';
 import doneSvg from './assets/svg/done.svg';
 import imptBtnSvg from './assets/svg/important.svg';
 import editBtnSvg from './assets/svg/edit.svg';
@@ -148,6 +149,8 @@ function displayFolderContent(e) {
     editBtn.src = editBtnSvg;
     editBtn.classList.add('big-icons');
     editBtn.setAttribute("title","Edit project name");
+    editBtn.setAttribute('data-parent-folder-id', `${folder.id}`);
+    editBtn.addEventListener('click', editFolderName);
     
     const delBtn = document.createElement('img');
     delBtn.src = delBtnSvg;
@@ -468,13 +471,61 @@ function editTodoDetails(e) {
     todoModal.showModal();
 }
 
+function editFolderName(e) {
+    // find folder
+    const folder = folderController.mainAppArray.find((item) => item.id === e.target.dataset.parentFolderId);
+    console.log(e.target.dataset.parentFolderId);
 
+    // remove the name
+    const headerWords = document.querySelector('.header-name h1');
+    headerWords.style.display = "none";
+
+    const headerName = document.querySelector('.header-name');
+
+    // spawn a input box + btn
+    const input = document.createElement('input');
+    input.setAttribute('type','text');
+    input.value = `${folder.name}`;
+
+    const confirm = document.createElement('img');
+    confirm.src = doneSvg;
+    confirm.classList.add('icons');
+
+    const cancel = document.createElement('img');
+    cancel.src = cancelSvg;
+    cancel.classList.add('icons');
+
+    headerName.append(input, confirm, cancel);
+
+    // eventlistener for confirm
+    confirm.addEventListener('click', () => {
+        folder.changeName(input.value);
+        console.log(folder.name);
+        removeInputBtns();
+        displayFolderName();
+        displayFolderContent(e);
+        console.log(e.target.dataset.parentFolderId);
+    })
+
+    // eventlistener for cancel
+    cancel.addEventListener('click', () => {
+        removeInputBtns();
+        headerWords.style.display = "block";
+    });
+    
+
+    // change folder name in array
+    // display on sidebar
+    // 
+
+    function removeInputBtns() {
+        input.remove();
+        confirm.remove();
+        cancel.remove();
+    }
+}
 
 // function to edit folder name
-// click -> dialog -> IF confirmed, delete old one, replace with new
-// IF exit, nothing happens
-
-// function to edit todo details
 
 // do the stacking effect ( todos collide with "new" todo button)
 
