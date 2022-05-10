@@ -34,34 +34,57 @@ const todoModal = document.querySelector('#todo-modal');
 const toDoDetailsForm = document.querySelector('#toDoDetails');
 const todoModalBtn = document.querySelector('#todoModalBtn');
 
+let titleInput = document.querySelector('input#title');
+const titleError = document.querySelector('input#title + span.error');
+titleInput.addEventListener('keyup', () => {
+    if (titleInput.value !== "") {
+        titleError.innerText = "";
+    } else {
+        titleError.innerText = "Come on, at least give your task a title!";    
+    };
+});
+
+let dateInput = document.querySelector('input#dueDate');
+const dateError = document.querySelector('input#dueDate + span.error');
+dateInput.addEventListener('keyup', () => {
+    if (dateInput.value !== "") {
+        dateError.innerText = "";
+    } else {
+        dateError.innerText = "Enter a valid date!";
+    };
+})
+
+
+
+
 todoModalBtn.addEventListener('click', handleDetailsClick);
 
 // bring out the local storage memory
 
-if (localStorage.getItem("main")) {
-    folderController.mainAppArray = JSON.parse(localStorage.getItem("main"));
-    console.log(folderController.mainAppArray);
+// if (localStorage.getItem("main")) {
+//     folderController.mainAppArray = JSON.parse(localStorage.getItem("main"));
+//     console.log(folderController.mainAppArray);
 
-    folderController.mainAppArray.forEach((folder) => {
-        const newFolder = REfolderFactory(folder.name, folder.id, folder.arr);
-        console.log(newFolder);
+//     folderController.mainAppArray.forEach((folder) => {
+//         const newFolder = REfolderFactory(folder.name, folder.id, folder.arr);
+//         console.log(newFolder);
         
-        // newFolder.toDoArray.forEach((todo) => {
-        //     const newToDo = REtoDoFactory(todo.title, todo.description, todo.dueDate, todo.priority, todo.isDone, todo.id);
-        // });
+//         newFolder.toDoArray.forEach((todo) => {
+//             const newToDo = REtoDoFactory(todo.title, todo.description, todo.dueDate, todo.priority, todo.isDone, todo.id);
+//         });
         
-    });
-}
+//     });
+// }
 
 
     
 
-window.addEventListener('beforeunload', saveState);
+// window.addEventListener('beforeunload', saveState);
 
-function saveState() {
-    localStorage.setItem("main", JSON.stringify(folderController.mainAppArray));
-    return null;
-}
+// function saveState() {
+//     localStorage.setItem("main", JSON.stringify(folderController.mainAppArray));
+//     return null;
+// }
 
 // initialize default folder on first visit
 if (folderController.mainAppArray.length === 0) {
@@ -562,20 +585,17 @@ function editFolderName(e) {
 
 function validateFormInputs() {
     // validate empty title field
-    let titleInput = document.querySelector('input#title');
+    
     if (titleInput.value === "") {
-        alert("Come on, at least give your task a title!");
         return false;
     } 
 
     // display error message for empty title field
 
     // validate date
-    let dateInput = document.querySelector('input#dueDate');
     // valide empty date field
     // console.log(dateInput.value);
     if (dateInput.value === "") {
-        alert("Enter a valid date!");
         return false;
     };
     // incorrect date input automatically checked by date picker (returns "")

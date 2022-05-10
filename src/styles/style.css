@@ -219,13 +219,25 @@ dialog::backdrop {
     gap: 5px;
 }
 
-
 #toDoDetails > div {
+    display: flex;
+    flex-direction: column;
+}
+
+#toDoDetails > div > span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgb(176, 11, 11);
+    text-transform: uppercase;
+}
+
+#toDoDetails > div:last-child {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 3px;
 }
+
 
 
 

@@ -48,9 +48,15 @@
     <dialog id="todo-modal">
             <div class="modal-wrapper">
                 <form id="toDoDetails">
-                    <label for="title">Title</label><input type="text" id="title" name="title">
-                    <label for="dueDate">Due Date</label><input type="date" id="dueDate" name="dueDate">
-                    <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10" placeholder="A brief description of your task..."></textarea>
+                    <label for="title">Title</label>
+                    <div>
+                        <input type="text" id="title" name="title"><span class="error"> </span>
+                    </div>
+                    <label for="dueDate">Due Date</label>
+                    <div>
+                        <input type="date" id="dueDate" name="dueDate"><span class="error"> </span>
+                    </div>
+                        <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10" placeholder="A brief description of your task..."></textarea>
                     <div>
                         <input type="checkbox" id="priority" name="priority"><label for="priority">Mark as Important</label>
                     </div>
