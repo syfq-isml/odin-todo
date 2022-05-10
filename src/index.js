@@ -367,6 +367,15 @@ function displayToDo(folder) {
     todoBox.append(checkBoxWrap, expandBtn, mainWrapper, todoActionsBox);
     todoWrapper.append(todoBox);
 
+    // spawn in a empty box at the end to help with scrolling
+    if (index === arr.length-1) {
+        console.log(index);
+        const emptyBox = document.createElement('div');
+        emptyBox.style.minHeight = '10px';
+        emptyBox.style.width = '50px';
+        todoWrapper.append(emptyBox);
+    }
+
     });
 
 }
