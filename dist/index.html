@@ -7,8 +7,76 @@
     <title>Todo App</title>
 <script defer src="main.js"></script></head>
 <body>
-    <main>
-        <h1>Testing..</h1>
-    </main>
+    
+    <div id="page-wrapper">
+        <header>
+            <h1>To-Do Voodoo</h1>
+        </header>
+        <main>
+            <div id="sidebar">
+                <div class="wrapper">
+                    <h2>Projects</h2>
+                    <div id="projects-wrapper">
+                        <div id="proj-name-wrapper">
+                          <!-- <div class="indiv-proj-wrapper">
+                            <h3>Project #1</h3>
+                        </div> -->
+                        </div>
+                        <button type="button" id="add-new-btn">
+                            <h3>+ Add new project</h3>
+                        </button>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <h2>Calendar View</h2>
+                    <h6>(WIP)</h6>
+                </div>
+            </div>
+            <div id="display-section">
+                <div id="display-section-wrapper">
+                    <h1 id="init-greeting">Click on a project to begin!</h1>
+                    
+                    <div id="todo-wrapper">
+                        
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <dialog id="todo-modal">
+            <div class="modal-wrapper">
+                <form id="toDoDetails">
+                    <label for="title">Title</label>
+                    <div>
+                        <input type="text" id="title" name="title"><span class="error"> </span>
+                    </div>
+                    <label for="dueDate">Due Date</label>
+                    <div>
+                        <input type="date" id="dueDate" name="dueDate"><span class="error"> </span>
+                    </div>
+                        <label for="description">Description</label><textarea name="description" id="description" cols="30" rows="10" placeholder="A brief description of your task..."></textarea>
+                    <div>
+                        <input type="checkbox" id="priority" name="priority"><label for="priority">Mark as Important</label>
+                    </div>
+                </form>
+                <button type="button" id="todoModalBtn">Submit</button>
+            </div>
+    </dialog>
 </body>
-</html>
+</html> 
+
+
+<!-- <div>
+            <fieldset>
+                <legend>Enter Details</legend>
+                <form id="toDoDetails">
+                    <label for="title">Title</label><input required type="text" id="title" name="title">
+                    <input type="date" id="dueDate"><label for="dueDate"></label>
+                    <input type="checkbox" id="priority"><label for="priority">Mark as Important</label>
+                    <label for="description"></label><textarea name="" id="description" cols="30" rows="10"></textarea>
+                </form>
+                <button type="submit" form="toDoDetails" id="toDoDetailsBtn">Submit</button>
+            </fieldset>
+        </div> -->

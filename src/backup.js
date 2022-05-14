@@ -549,8 +549,9 @@ function editFolderName(e) {
 function validateFormInputs() {
     // validate empty title field
     let titleInput = document.querySelector('input#title');
+    const titleError = document.querySelector('input#title + span.error')
     if (titleInput.value === "") {
-        alert("Come on, at least give your task a title!");
+        titleError.innerText = "Come on, at least give your task a title!";
         return false;
     } 
 
@@ -558,6 +559,7 @@ function validateFormInputs() {
 
     // validate date
     let dateInput = document.querySelector('input#dueDate');
+    const dateError = document.querySelector('input#dueDate + span.error');
     // valide empty date field
     // console.log(dateInput.value);
     if (dateInput.value === "") {
