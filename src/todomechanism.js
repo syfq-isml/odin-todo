@@ -1,219 +1,223 @@
-
 import { compareAsc } from "date-fns";
 import format from "date-fns/format";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-const folderController = (function(){
-    let mainAppArray = [];
+const folderController = (function () {
+	let mainAppArray = [];
 
-    const rearrangeFolderOrder = function() {
+	const rearrangeFolderOrder = function () {};
 
-    }
+	const addFolderIntoArray = (folderObj) => {
+		mainAppArray.push(folderObj);
+	};
 
-    const addFolderIntoArray = (folderObj) => {
-        mainAppArray.push(folderObj);
-    }
+	const removeFolderFromArray = (index) => {
+		mainAppArray.splice(index, 1);
+	};
 
-    const removeFolderFromArray = (index) => {
-        mainAppArray.splice(index, 1);
-    }
-
-    return {
-        mainAppArray, 
-        addFolderIntoArray, 
-        removeFolderFromArray
-    };
+	return {
+		mainAppArray,
+		addFolderIntoArray,
+		removeFolderFromArray,
+	};
 })();
 
-const folderFactory = function(name) {
-    let _name = name;
+const folderFactory = function (name) {
+	let _name = name;
 
-    const _id = uuidv4();
+	const _id = uuidv4();
 
-    let toDoArray = [];
+	let toDoArray = [];
 
-    const addToDoIntoFolder = (toDoObj) => {
-        toDoArray.push(toDoObj);
-    }
+	const addToDoIntoFolder = (toDoObj) => {
+		toDoArray.push(toDoObj);
+	};
 
-    const removeToDoFromFolder = (index) => {
-        toDoArray.splice(index, 1);
-    }
+	const removeToDoFromFolder = (index) => {
+		toDoArray.splice(index, 1);
+	};
 
-    const changeName = (newName) => {
-        _name = newName;
-    }
+	const changeName = (newName) => {
+		_name = newName;
+	};
 
-    const sortByDueDate = () => {
-        toDoArray.sort((a,b) => compareAsc(a.dueDate, b.dueDate));
-    }
+	const sortByDueDate = () => {
+		toDoArray.sort((a, b) => compareAsc(a.dueDate, b.dueDate));
+	};
 
+	return {
+		get name() {
+			return _name;
+		},
 
-    return {
-        get name() {
-            return _name;
-        },
+		get id() {
+			return _id;
+		},
 
-        get id() {
-            return _id;
-        },
+		get toDoArray() {
+			return toDoArray;
+		},
 
-        get toDoArray() {
-            return toDoArray;
-        },
+		addToDoIntoFolder,
+		removeToDoFromFolder,
+		changeName,
+		sortByDueDate,
+	};
+};
 
-        addToDoIntoFolder,
-        removeToDoFromFolder,
-        changeName,
-        sortByDueDate
-    }
-}
+const toDoFactory = function (title, description, dueDate, priority, isDone) {
+	let _title = title;
+	let _description = description;
+	let _dueDate = dueDate;
+	let _priority = priority;
+	let _isDone = isDone;
+	const _id = uuidv4();
 
-const toDoFactory = function(title, description, dueDate, priority, isDone) {
-    let _title = title;
-    let _description = description;
-    let _dueDate = dueDate;
-    let _priority = priority;
-    let _isDone = isDone;
-    const _id = uuidv4();
+	const changeStatus = (newStatus) => {
+		_isDone = newStatus;
+	};
 
-    const changeStatus = (newStatus) => {
-        _isDone = newStatus;
-    }
+	const editAllDetails = (newTitle, newDesc, newDate, newPrio) => {
+		_title = newTitle;
+		_description = newDesc;
+		_dueDate = newDate;
+		_priority = newPrio;
+	};
 
-    const editAllDetails = (newTitle, newDesc, newDate, newPrio) => {
-        _title = newTitle;
-        _description = newDesc;
-        _dueDate = newDate;
-        _priority = newPrio;
-    }
+	return {
+		get title() {
+			return _title;
+		},
 
+		get description() {
+			return _description;
+		},
 
+		get dueDate() {
+			return _dueDate;
+		},
 
-    return {
-        get title() {
-            return _title
-        },
+		get priority() {
+			return _priority;
+		},
 
-        get description() {
-            return _description
-        },
+		get id() {
+			return _id;
+		},
 
-        get dueDate() {
-            return _dueDate
-        },
+		get isDone() {
+			return _isDone;
+		},
 
-        get priority() {
-            return _priority
-        },
+		changeStatus,
+		editAllDetails,
+	};
+};
 
-        get id() {
-            return _id
-        },
+const REfolderFactory = function (name, id, arr) {
+	let _name = name;
 
-        get isDone() {
-            return _isDone
-        },
+	const _id = id;
 
-        changeStatus,
-        editAllDetails
-    }
-}
+	let toDoArray = arr;
 
-const REfolderFactory = function(name, id, arr) {
-    let _name = name;
+	const addToDoIntoFolder = (toDoObj) => {
+		toDoArray.push(toDoObj);
+		toDoArray.sort((a, b) => compareAsc(a.dueDate, b.dueDate));
+	};
 
-    const _id = id;
+	const removeToDoFromFolder = (index) => {
+		toDoArray.splice(index, 1);
+	};
 
-    let toDoArray = arr;
+	const changeName = (newName) => {
+		_name = newName;
+	};
 
-    const addToDoIntoFolder = (toDoObj) => {
-        toDoArray.push(toDoObj);
-    }
+	const sortByDueDate = () => {
+		toDoArray.sort((a, b) => compareAsc(a.dueDate, b.dueDate));
+	};
 
-    const removeToDoFromFolder = (index) => {
-        toDoArray.splice(index, 1);
-    }
+	return {
+		get name() {
+			return _name;
+		},
 
-    const changeName = (newName) => {
-        _name = newName;
-    }
+		get id() {
+			return _id;
+		},
 
-    const sortByDueDate = () => {
-        toDoArray.sort((a,b) => compareAsc(a.dueDate, b.dueDate));
-    }
+		get toDoArray() {
+			return toDoArray;
+		},
 
+		addToDoIntoFolder,
+		removeToDoFromFolder,
+		changeName,
+		sortByDueDate,
+	};
+};
 
-    return {
-        get name() {
-            return _name;
-        },
+const REtoDoFactory = function (
+	title,
+	description,
+	dueDate,
+	priority,
+	isDone,
+	id
+) {
+	let _title = title;
+	let _description = description;
+	let _dueDate = dueDate;
+	let _priority = priority;
+	let _isDone = isDone;
+	const _id = id;
 
-        get id() {
-            return _id;
-        },
+	const changeStatus = (newStatus) => {
+		_isDone = newStatus;
+	};
 
-        get toDoArray() {
-            return toDoArray;
-        },
+	const editAllDetails = (newTitle, newDesc, newDate, newPrio) => {
+		_title = newTitle;
+		_description = newDesc;
+		_dueDate = newDate;
+		_priority = newPrio;
+	};
 
-        addToDoIntoFolder,
-        removeToDoFromFolder,
-        changeName,
-        sortByDueDate
-    }
-}
+	return {
+		get title() {
+			return _title;
+		},
 
-const REtoDoFactory = function(title, description, dueDate, priority, isDone, id) {
-    let _title = title;
-    let _description = description;
-    let _dueDate = dueDate;
-    let _priority = priority;
-    let _isDone = isDone;
-    const _id = id;
+		get description() {
+			return _description;
+		},
 
-    const changeStatus = (newStatus) => {
-        _isDone = newStatus;
-    }
+		get dueDate() {
+			return _dueDate;
+		},
 
-    const editAllDetails = (newTitle, newDesc, newDate, newPrio) => {
-        _title = newTitle;
-        _description = newDesc;
-        _dueDate = newDate;
-        _priority = newPrio;
-    }
+		get priority() {
+			return _priority;
+		},
 
+		get id() {
+			return _id;
+		},
 
+		get isDone() {
+			return _isDone;
+		},
 
-    return {
-        get title() {
-            return _title
-        },
+		changeStatus,
+		editAllDetails,
+	};
+};
 
-        get description() {
-            return _description
-        },
-
-        get dueDate() {
-            return _dueDate
-        },
-
-        get priority() {
-            return _priority
-        },
-
-        get id() {
-            return _id
-        },
-
-        get isDone() {
-            return _isDone
-        },
-
-        changeStatus,
-        editAllDetails
-    }
-}
-
-
-export { folderController, folderFactory, toDoFactory, REfolderFactory, REtoDoFactory };
+export {
+	folderController,
+	folderFactory,
+	toDoFactory,
+	REfolderFactory,
+	REtoDoFactory,
+};
