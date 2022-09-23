@@ -2,12 +2,23 @@
 
 Keep track of your to-dos with this simple to-do list app!
 
-Your to-dos can be stored in their own folders.
-Add additional information to your to-dos like due dates, importance and descriptions.
-Done with your to-do? Mark it as done!
-This app conveniently remembers your to-dos, so don't worry about clicking away.
+## Features
 
-Accidentally removed your folder? Undo it!
+### 1. Folders/Projects
+
+    - Ability to create, rename and delete projects
+    - Deletion of folders will prompt an undo or view another folder
+
+### 2. To-dos
+
+    - Ability to create, edit and delete to-dos
+    - Store information like due dates, importance and descriptions
+    - Mark a to-do as done
+    - Editing to-dos will pop up a dialog box, which has input validation
+
+### 3. Memory persistence
+
+    -  Folders and todos are stored in localStorage
 
 ## Live Preview
 
