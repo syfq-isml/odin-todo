@@ -1,20 +1,10 @@
 import "../node_modules/normalize.css/normalize.css";
 import "./styles/style.css";
 
-import {
-	folderController,
-	folderFactory,
-	toDoFactory,
-	REfolderFactory,
-	REtoDoFactory,
-} from "./todomechanism";
+import { folderController, folderFactory, toDoFactory } from "./todomechanism";
 
 import format from "date-fns/format";
-import isEqual from "date-fns/isEqual";
-import set from "date-fns/set";
 import parseISO from "date-fns/parseISO";
-import isValid from "date-fns/isValid";
-import isExists from "date-fns/isExists";
 import { isSameDay } from "date-fns";
 
 import expandMoreSvg from "./assets/svg/expand-more.svg";
@@ -73,7 +63,6 @@ let FIRST_VISIT = true;
 
 if (localStorage.getItem("main")) {
 	FIRST_VISIT = false;
-	console.log("First visit: " + FIRST_VISIT);
 	JSON.parse(localStorage.getItem("main")).forEach((folder) => {
 		const newFolder = folderFactory(folder.name, folder.id);
 
@@ -92,7 +81,6 @@ if (localStorage.getItem("main")) {
 
 		folderController.addFolderIntoArray(newFolder);
 	});
-	console.log(folderController.mainAppArray);
 }
 
 window.addEventListener("beforeunload", () => {
@@ -103,8 +91,6 @@ window.addEventListener("beforeunload", () => {
 
 // initialize default folder on first visit
 if (FIRST_VISIT) {
-	console.log("IT ENTERS HERE");
-	console.log("First visit: " + FIRST_VISIT);
 	folderController.addFolderIntoArray(defaultFolder);
 	const currentDate = Date.now();
 
@@ -168,7 +154,6 @@ function addNewFolder() {
 		const newFolder = folderFactory(input.value);
 		folderController.addFolderIntoArray(newFolder);
 		console.log("added new folder into controller");
-		console.log(folderController.mainAppArray);
 
 		// display folder name on sidebar
 		displayFolderName();
@@ -200,7 +185,6 @@ function displayFolderName() {
 
 		const folderName = document.createElement("h3");
 		folderName.innerText = `${item.name}`;
-		console.log("now showing the name");
 
 		folderWrapper.append(folderName);
 		projWrapper.append(folderWrapper);
@@ -223,7 +207,6 @@ function displayFolderContent(e) {
 	const folder = folderController.mainAppArray.find(
 		(item) => item.id === e.target.dataset.parentFolderId
 	);
-	console.log(folder);
 
 	// create new DOM elements
 	const headerDiv = document.createElement("div");
@@ -425,7 +408,6 @@ function displayToDo(folder) {
 
 		// spawn in a empty box at the end to help with scrolling
 		if (index === arr.length - 1) {
-			console.log(index);
 			const emptyBox = document.createElement("div");
 			emptyBox.style.minHeight = "10px";
 			emptyBox.style.width = "50px";
@@ -442,13 +424,11 @@ function handleDelete(e) {
 
 	// get index of the target btn
 	const index = btns.findIndex((btn) => btn === e.target);
-	console.log(index);
 
 	// find folder with the dataset name
 	const folder = folderController.mainAppArray.find(
 		(item) => item.id === e.target.dataset.parentFolderId
 	);
-	console.log(folder);
 
 	// simply delete a todo
 	// from DOM (+ date)
@@ -468,20 +448,17 @@ function deleteToDoFromArrays(e) {
 
 	// get index of the target btn
 	const index = btns.findIndex((btn) => btn === e.target);
-	console.log(index);
 
 	// find folder with the dataset name
 	const folder = folderController.mainAppArray.find(
 		(item) => item.id === e.target.dataset.parentFolderId
 	);
-	console.log(folder);
 
 	// from btns array
 	btns.splice(index, 1);
 
 	// from folder array
 	folder.removeToDoFromFolder(index);
-	console.log(folder.toDoArray);
 
 	// remove everything from todo-wrapper
 	removeChildFromParent(todoWrapper);
@@ -522,7 +499,8 @@ function deleteFolder(folder) {
 		(item) => item.id === folder.id
 	);
 	// then remove it
-	const deletedFolder = folderController.mainAppArray.splice(index, 1);
+	const deletedFolder = folderController.removeFolderFromArray(index);
+	// const deletedFolder = folderController.mainAppArray.splice(index, 1);
 	wipeDOMCarefully();
 
 	const deleteGreeting = document.createElement("h1");
@@ -531,7 +509,7 @@ function deleteFolder(folder) {
 	displaySectionWrapper.append(deleteGreeting);
 
 	const undoBtn = deleteGreeting.children[1];
-	console.log(undoBtn);
+
 	undoBtn.setAttribute("data-parent-folder-id", `${deletedFolder[0].id}`);
 	console.log(deletedFolder[0].id);
 	undoBtn.addEventListener("click", (e) =>
@@ -544,7 +522,7 @@ function deleteFolder(folder) {
 		"data-parent-folder-id",
 		`${generateRandomFolderIndex()}`
 	);
-	console.log(viewAnotherBtn);
+
 	viewAnotherBtn.addEventListener("click", displayFolderContent);
 
 	// remove from sidebar array (for now lets just reload entire array)
@@ -552,9 +530,9 @@ function deleteFolder(folder) {
 }
 
 function undoDeleteFolder(e, folder, index) {
-	console.log(e);
 	// add back into array
-	folderController.mainAppArray.splice(index, 0, ...folder);
+	folderController.addFolderIntoArray(...folder, index);
+	// folderController.mainAppArray.splice(index, 0, ...folder);
 
 	// show back contents on DOM
 	displayFolderContent(e);
@@ -581,7 +559,6 @@ function editTodoDetails(e) {
 	toDoDetailsForm.title.value = todo.title;
 	toDoDetailsForm.description.value = todo.description;
 	toDoDetailsForm.priority.checked = todo.priority;
-	console.log(todo.dueDate);
 	toDoDetailsForm.dueDate.value = format(todo.dueDate, "yyyy-MM-dd");
 
 	todoModalBtn.setAttribute("data-parent-folder-id", `${folder.id}`);
@@ -598,7 +575,6 @@ function editFolderName(e) {
 	const folder = folderController.mainAppArray.find(
 		(item) => item.id === e.target.dataset.parentFolderId
 	);
-	console.log(e.target.dataset.parentFolderId);
 
 	// remove the name
 	const headerWords = document.querySelector(".header-name h1");
@@ -624,11 +600,9 @@ function editFolderName(e) {
 	// eventlistener for confirm
 	confirm.addEventListener("click", () => {
 		folder.changeName(input.value);
-		console.log(folder.name);
 		removeInputBtns();
 		displayFolderName();
 		displayFolderContent(e);
-		console.log(e.target.dataset.parentFolderId);
 	});
 
 	// eventlistener for cancel
@@ -648,16 +622,6 @@ function editFolderName(e) {
 	}
 }
 
-// function to edit folder name
-
-// do the stacking effect ( todos collide with "new" todo button)
-
-// local storage
-
-// add isExpanded to remember if todo is expanded or not
-
-// add time aspect
-
 function validateFormInputs() {
 	// validate empty title field
 
@@ -669,7 +633,6 @@ function validateFormInputs() {
 
 	// validate date
 	// valide empty date field
-	// console.log(dateInput.value);
 	if (dateInput.value === "") {
 		return false;
 	}
@@ -682,7 +645,6 @@ function validateFormInputs() {
 	// })
 
 	// if (isExists(numbers[0],numbers[1],numbers[2])) return false;
-	// console.log('Date exists');
 
 	return true;
 }
@@ -696,13 +658,11 @@ function handleDetailsClick(e) {
 
 	// if editing todo, delete old one first
 	if (todoModalBtn.hasAttribute("data-edit-todo")) {
-		console.log("I am called");
 		const todo = folder.toDoArray.find(
 			(item) => item.id === e.target.dataset.todoId
 		);
 		// const index = folder.toDoArray.findIndex((item) => item === todo);
 		// folder.toDoArray.splice(index, 1);
-		// console.log('Todo removed');
 		todo.editAllDetails(
 			toDoDetailsForm.title.value,
 			toDoDetailsForm.description.value,
@@ -720,10 +680,7 @@ function handleDetailsClick(e) {
 			toDoDetailsForm.priority.checked,
 			false
 		);
-		console.log(new Date(toDoDetailsForm.dueDate.value));
 		folder.addToDoIntoFolder(newToDo);
-		console.log(folder.toDoArray);
-		// console.log(folderController.mainAppArray);
 	}
 
 	todoModal.close();
@@ -741,5 +698,3 @@ function isInputEmpty(selector) {
 	if (result === -1) return false;
 	return true;
 }
-
-console.log("length @ end: " + folderController.mainAppArray.length);
