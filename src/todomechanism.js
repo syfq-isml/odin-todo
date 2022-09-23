@@ -5,8 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 const folderController = (function () {
 	let mainAppArray = [];
 
-	const rearrangeFolderOrder = function () {};
-
 	const addFolderIntoArray = (folderObj) => {
 		mainAppArray.push(folderObj);
 	};
@@ -16,16 +14,18 @@ const folderController = (function () {
 	};
 
 	return {
-		mainAppArray,
+		get mainAppArray() {
+			return mainAppArray;
+		},
 		addFolderIntoArray,
 		removeFolderFromArray,
 	};
 })();
 
-const folderFactory = function (name) {
+const folderFactory = function (name, id = uuidv4()) {
 	let _name = name;
 
-	const _id = uuidv4();
+	const _id = id;
 
 	let toDoArray = [];
 
@@ -65,13 +65,20 @@ const folderFactory = function (name) {
 	};
 };
 
-const toDoFactory = function (title, description, dueDate, priority, isDone) {
+const toDoFactory = function (
+	title,
+	description,
+	dueDate,
+	priority,
+	isDone,
+	id = uuidv4()
+) {
 	let _title = title;
 	let _description = description;
 	let _dueDate = dueDate;
 	let _priority = priority;
 	let _isDone = isDone;
-	const _id = uuidv4();
+	const _id = id;
 
 	const changeStatus = (newStatus) => {
 		_isDone = newStatus;
@@ -168,7 +175,7 @@ const REtoDoFactory = function (
 ) {
 	let _title = title;
 	let _description = description;
-	let _dueDate = dueDate;
+	let _dueDate = new Date(dueDate);
 	let _priority = priority;
 	let _isDone = isDone;
 	const _id = id;

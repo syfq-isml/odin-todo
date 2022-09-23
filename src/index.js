@@ -69,48 +69,42 @@ const isString = (value) =>
 
 // bring out the local storage memory
 
-// window.addEventListener("load", () => {
-// 	if (localStorage.getItem("main")) {
-// 		folderController.mainAppArray = JSON.parse(localStorage.getItem("main"));
-// 		console.log(folderController.mainAppArray);
+let FIRST_VISIT = true;
 
-// 		folderController.mainAppArray.forEach((folder) => {
-// 			const newFolder = REfolderFactory(
-// 				folder.name,
-// 				folder.id,
-// 				folder.toDoArray
-// 			);
-// 			console.log(newFolder);
-// 			console.log(newFolder.toDoArray);
+if (localStorage.getItem("main")) {
+	FIRST_VISIT = false;
+	console.log("First visit: " + FIRST_VISIT);
+	JSON.parse(localStorage.getItem("main")).forEach((folder) => {
+		const newFolder = folderFactory(folder.name, folder.id);
 
-// 			newFolder.toDoArray.forEach((todo) => {
-// 				const newToDo = REtoDoFactory(
-// 					todo.title,
-// 					todo.description,
-// 					todo.dueDate,
-// 					todo.priority,
-// 					todo.isDone,
-// 					todo.id
-// 				);
-// 				console.log("new todo: " + newToDo);
-// 			});
-// 		});
-// 	}
-// });
+		folder.toDoArray.forEach((todo) => {
+			const newToDo = toDoFactory(
+				todo.title,
+				todo.description,
+				todo.dueDate,
+				todo.priority,
+				todo.isDone,
+				todo.id
+			);
 
-// //     });
-// // }
+			newFolder.addToDoIntoFolder(newToDo);
+		});
 
-// window.addEventListener("beforeunload", saveState);
+		folderController.addFolderIntoArray(newFolder);
+	});
+	console.log(folderController.mainAppArray);
+}
 
-// function saveState() {
-// 	localStorage.setItem("main", JSON.stringify(folderController.mainAppArray));
+window.addEventListener("beforeunload", () => {
+	localStorage.setItem("main", JSON.stringify(folderController.mainAppArray));
 
-// 	return null;
-// }
+	return null;
+});
 
 // initialize default folder on first visit
-if (folderController.mainAppArray.length === 0) {
+if (FIRST_VISIT) {
+	console.log("IT ENTERS HERE");
+	console.log("First visit: " + FIRST_VISIT);
 	folderController.addFolderIntoArray(defaultFolder);
 	const currentDate = Date.now();
 
@@ -738,7 +732,7 @@ function handleDetailsClick(e) {
 	// refresh array
 	removeChildFromParent(todoWrapper);
 	displayToDo(folder);
-	// displayFolderContent(e);
+	displayFolderContent(e);
 }
 
 function isInputEmpty(selector) {
@@ -747,3 +741,5 @@ function isInputEmpty(selector) {
 	if (result === -1) return false;
 	return true;
 }
+
+console.log("length @ end: " + folderController.mainAppArray.length);
